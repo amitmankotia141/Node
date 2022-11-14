@@ -32,7 +32,7 @@ const server=http.createServer((req,res)=>{
         }
         else{
         res.write(file);
-        res.end();
+        res.end()
         }
     })
 })
