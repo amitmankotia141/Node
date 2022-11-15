@@ -1,9 +1,15 @@
 const http=require("http")
 const fs=require("fs")
+const _=require("lodash")
 const server=http.createServer((req,res)=>{
     console.log("request from browser to server");
-    console.log("123",req);
     console.log(req.method);
+    console.log(req.url);
+    let greet=_.once(()=>{
+    console.log("bye");
+    })
+    greet()
+    greet()
     res.setHeader("Content-Type","text/html");
     // res.write("<h1>Hello World</h1>")
     // res.write("<h2>Hello World</h2>")
@@ -11,7 +17,7 @@ const server=http.createServer((req,res)=>{
     let path="./Views"
     switch (req.url) {
         case "/":
-            path+='/Index.html'
+            path=path+'/Index.html'
             break;
         case "/About":
         path+='/About.html'
