@@ -19,7 +19,9 @@ let users=[
 }
 ]
 const userRouter=express.Router()
+const authRouter=express.Router()
 app.use("/users",userRouter)
+app.use("/auth",authRouter)
 userRouter
 .route("/")
 .get(getUser)
@@ -29,6 +31,10 @@ userRouter
 userRouter
 .route("/:id")
 .get(userById)
+authRouter
+.route("/signup")
+.get(getSignup)
+.post(postSignup)
 //Query
 // app.get("/users",)
 // app.post("/users",)
@@ -74,5 +80,18 @@ function userById(req,res){
 console.log(req.params.id)
 res.json({msg:"user id is",
 obj:req.params})
+}
+function getSignup(req,res){
+res.sendFile("/Views/Hello.html",{root:__dirname})
+}
+function postSignup(req,res){
+let {email,name,password}=req.body
+console.log(req.body);
+res.json({
+msg:"user signed up",
+email,
+name,
+password
+})
 }
 app.listen(5000);
