@@ -1,8 +1,7 @@
 const express=require("express")
 const app=express();
 const mongoose=require("mongoose")
-const {db_link}=require(".secrets/")
-console.log(db_link);
+const db_link=require("./secret")
 app.use(express.json())
 let users=[
 {
@@ -45,7 +44,7 @@ authRouter
 // app.delete("/users",)
 //Params
 // app.get("/users/:id",)
-function getUser(req,res){
+async function getUser(req,res){
 console.log(req.query);
 console.log(req.query.name);
 // let{name,age}=req.query
@@ -53,7 +52,11 @@ console.log(req.query.name);
 // return (userObj.name==name && userObj.age==age)
 // })
 // res.send(filteredData)
-res.send(users)
+let allUser=await userModel.findOne({name:"Amit"})
+res.json({
+msg:"users retrieved",
+allUser
+})
 }
 function postUser(req,res){
 console.log(req.body);
@@ -87,22 +90,64 @@ obj:req.params})
 function getSignup(req,res){
 res.sendFile("/Views/Hello.html",{root:__dirname})
 }
-function postSignup(req,res){
-let {email,name,password}=req.body
-console.log(req.body);
+async function postSignup(req,res){
+// let {email,name,password}=req.body
+try{let data=req.body;
+let user= await userModel.create(data)
+console.log(data);
 res.json({
 msg:"user signed up",
-email,
-name,
-password
+user
 })
+}
+catch(err){
+res.json({
+err:err.message
+})
+}
 }
 app.listen(5000);
 
-// mongoose.connect(db_link)
-// .then(function(db){
-// console.log("db connected");
-// })
-// .catch(function(err){
-// console.log(err);
-// })
+mongoose.connect(db_link)
+.then(function(db){
+console.log("db connected");
+// console.log(db);
+})
+.catch(function(err){
+console.log(err);
+})
+
+const userSchema=mongoose.Schema({
+    name:{
+        type:String,
+        required:true
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true,
+        minLength:7
+    },
+    confirmPassword:{
+        type:String,
+        required:true,
+        minLength:7
+    },
+});
+//models
+const userModel=mongoose.model("userModel",userSchema);
+
+// (async function createUser(){
+//     let user={
+//         name:"Raj",
+//         email:"raj@gmail.com",
+//         password:"12345678",
+//         confirmPassword:"12345678"
+//     }
+//     let data= await userModel.create(user);
+//     console.log(data);
+// })();
