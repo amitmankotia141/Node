@@ -66,18 +66,24 @@ message:"data received",
 user:req.body
 })
 }
-function updateUser(req,res){
+async function updateUser(req,res){
 console.log(req.body);
 let dataToBeUpdated=req.body
-for(key in dataToBeUpdated){
-users[key]=dataToBeUpdated[key]
-}
+// for(key in dataToBeUpdated){
+// users[key]=dataToBeUpdated[key]
+// }
+let doc=await userModel.findOneAndUpdate({email:"amit@gmail.com"},
+dataToBeUpdated)
 res.json({
-message:"data updated"
+message:"data updated",
+dataToBeUpdated
 })
 }
-function deleteUser(req,res){
-users={}
+async function deleteUser(req,res){
+// users={}
+// let doc=await userModel.deleteOne({name:"Sanjay"})
+let doc=await userModel.findOneAndRemove({email:"raju@gmail.com"});
+console.log(doc);
 res.json({
 message:"data deleted"
 })
@@ -138,6 +144,12 @@ const userSchema=mongoose.Schema({
         minLength:7
     },
 });
+userSchema.pre("save",function(){
+console.log("before saving in db");
+})
+userSchema.post("save",function(){
+console.log("after saving in db");
+})
 //models
 const userModel=mongoose.model("userModel",userSchema);
 
