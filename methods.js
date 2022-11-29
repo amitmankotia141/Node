@@ -1,8 +1,6 @@
 const express=require("express")
 const app=express();
-const mongoose=require("mongoose")
-const db_link=require("./secret")
-const emailValidator=require("email-validator")
+const userModel=require("./Model/userModel")
 app.use(express.json())
 let users=[
 {
@@ -114,51 +112,14 @@ err:err.message
 }
 }
 app.listen(5000);
-
-mongoose.connect(db_link)
-.then(function(db){
-console.log("db connected");
-// console.log(db);
-})
-.catch(function(err){
-console.log(err);
-})
-
-const userSchema=mongoose.Schema({
-    name:{
-        type:String,
-        required:true
-    },
-    email:{
-        type:String,
-        required:true,
-        unique:true,
-        validate:function(){
-        return (emailValidator.validate(this.email))
-        }
-    },
-    password:{
-        type:String,
-        required:true,
-        minLength:7
-    },
-    confirmPassword:{
-        type:String,
-        required:true,
-        minLength:7,
-        validate:function(){
-        return (this.confirmPassword==this.password)
-        }
-    },
-});
-userSchema.pre("save",function(){
-console.log("before saving in db");
-})
-userSchema.post("save",function(){
-console.log("after saving in db");
-})
-//models
-const userModel=mongoose.model("userModel",userSchema);
+// userSchema.pre("save",function(){
+// console.log("before saving in db");
+// })
+// userSchema.post("save",function(){
+// console.log("after saving in db");
+// })
+// //models
+// const userModel=mongoose.model("userModel",userSchema);
 
 // (async function createUser(){
 //     let user={
