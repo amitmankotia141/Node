@@ -1,7 +1,10 @@
 const express=require("express")
 const app=express();
 const userModel=require("./Model/userModel")
+const cookieParser=require("cookie-parser");
+const { endsWith } = require("lodash");
 app.use(express.json())
+app.use(cookieParser())
 let users=[
 {
     id:1,
@@ -23,6 +26,8 @@ const userRouter=express.Router()
 const authRouter=express.Router()
 app.use("/users",userRouter)
 app.use("/auth",authRouter)
+userRouter.route("/setCookies").get(setCookies)
+userRouter.route("/getCookies").get(getCookies)
 userRouter
 .route("/")
 .get(getUser)
@@ -110,6 +115,17 @@ res.json({
 err:err.message
 })
 }
+}
+function setCookies(req,res){
+// res.setHeader("Set-Cookie","isLoggedIn=true")
+res.cookie("isLoggedIn",false)
+res.cookie("password",12345678)
+res.send("Cookies has been set")
+}
+function getCookies(req,res){
+let cookie=req.cookies
+console.log(cookie);
+res.send("Cookies received")
 }
 app.listen(5000);
 // userSchema.pre("save",function(){
