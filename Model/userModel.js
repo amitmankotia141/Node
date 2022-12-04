@@ -10,7 +10,6 @@ console.log("db connected");
 .catch(function(err){
 console.log(err);
 })
-
 const userSchema=mongoose.Schema({
     name:{
         type:String,
@@ -48,12 +47,12 @@ userSchema.pre("save",function(){
 console.log("before saving in db");
 this.confirmPassword=undefined
 })
-userSchema.pre("save",async function(){
-let salt=await bcrypt.genSalt();
-let hashedString=await bcrypt.hash(this.password, salt);
-this.password=hashedString;
-console.log(hashedString);
-})
+// userSchema.pre("save",async function(){
+// let salt=await bcrypt.genSalt();
+// let hashedString=await bcrypt.hash(this.password, salt);
+// this.password=hashedString;
+// console.log(hashedString);
+// })
 
 //models
 const userModel=mongoose.model("userModel",userSchema);
