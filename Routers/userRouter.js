@@ -1,6 +1,8 @@
 const express=require("express")
 const userRouter=express.Router()
 const userModel=require("../Model/userModel")
+var jwt=require("jsonwebtoken")
+const JWT_KEY="qwerty141"
 userRouter.route("/setCookies").get(setCookies)
 userRouter.route("/getCookies").get(getCookies)
 userRouter
@@ -28,8 +30,17 @@ async function getUser(req,res){
     }
     // let isLoggedIn=true
     function protectRoute(req,res,next){
-    if(req.cookies.isLoggedIn){
-    next()
+    if(req.cookies.login){
+    let token=req.cookies.login
+    let isVerified=jwt.verify(token,JWT_KEY)
+    if(isVerified){
+    next()  
+    }
+    else{
+    res.json({
+        msg:"user not verified"
+    })
+    }
     }
     else{
     res.json({
