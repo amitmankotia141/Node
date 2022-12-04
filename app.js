@@ -12,8 +12,8 @@ res.redirect("/About")
 })
 //404
 app.use((req,res)=>{
-    res.status(404)
-    res.sendFile("/Views/404.html",{root:__dirname})
+res.status(404)
+res.sendFile("/Views/404.html",{root:__dirname})
 })
 app.listen(3000,()=>{
 console.log("server is listening");

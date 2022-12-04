@@ -11,9 +11,9 @@ authRouter
 .route("/login")
 .post(loginUser)
 function getSignup(req,res){
-    res.sendFile("/Views/Hello.html",{root:__dirname})
-    }
-    async function postSignup(req,res){
+res.sendFile("/Views/Hello.html",{root:__dirname})
+}
+async function postSignup(req,res){
     // let {email,name,password}=req.body
     try{let data=req.body;
     let user= await userModel.create(data)
@@ -28,36 +28,36 @@ function getSignup(req,res){
     err:err.message
     })
     }
-    }
-    async function loginUser(req,res){
-    try {
-    let {email,password}=req.body
-    let user=await userModel.findOne({email:email})
-    if(user){
-        if(password==user.password){
-            let uid=user["_id"]
-            var token=jwt.sign({payload:uid},JWT_KEY)
-            res.cookie("login",token)
-            res.json({
-                msg:"user logged in"
-            })
-        }
-        else{
-            res.json({
-                msg:"wrong credentials"
-            })
-        }
-    }
-    else{
-        res.json({
-            msg:"user not found"
-        })
-    }
+}
+async function loginUser(req,res){
+try {
+let {email,password}=req.body
+let user=await userModel.findOne({email:email})
+if(user){
+if(password==user.password){
+let uid=user["_id"]
+var token=jwt.sign({payload:uid},JWT_KEY)
+res.cookie("login",token)
+res.json({
+msg:"user logged in"
+})
+}
+else{
+res.json({
+msg:"wrong credentials"
+})
+}
+}
+else{
+res.json({
+msg:"user not found"
+})
+}
 } 
-    catch (err) {
-        res.json({
-            msg:err.message
-        })
-    }
-    }
-    module.exports=authRouter
+catch (err) {
+res.json({
+msg:err.message
+})
+}
+}
+module.exports=authRouter

@@ -24,14 +24,13 @@ app.listen(5000);
 // })
 // //models
 // const userModel=mongoose.model("userModel",userSchema);
-
 // (async function createUser(){
-//     let user={
-//         name:"Raj",
-//         email:"raj@gmail.com",
-//         password:"12345678",
-//         confirmPassword:"12345678"
-//     }
-//     let data= await userModel.create(user);
-//     console.log(data);
+// let user={
+// name:"Raj",
+// email:"raj@gmail.com",
+// password:"12345678",
+// confirmPassword:"12345678"
+// }
+// let data= await userModel.create(user);
+// console.log(data);
 // })();
