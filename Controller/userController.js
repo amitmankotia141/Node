@@ -1,5 +1,6 @@
 const userModel=require("../Model/userModel")
 module.exports.getUser=async function (req,res){
+try{
 console.log(req.query);
 console.log(req.query.name);
 // let{name,age}=req.query
@@ -7,55 +8,95 @@ console.log(req.query.name);
 // return (userObj.name==name && userObj.age==age)
 // })
 // res.send(filteredData)
-let allUser=await userModel.find()
+let id=req.id
+let user=await userModel.findById(id)
 res.json({
 msg:"users retrieved",
-allUser
+user
 })
 }
-module.exports.postUser=function (req,res){
-console.log(req.body);
-users.push(req.body)
+catch(err){
 res.json({
-message:"data received",
-user:req.body
+msg:err.message
 })
 }
+}
+// module.exports.postUser=function (req,res){
+// console.log(req.body);
+// users.push(req.body)
+// res.json({
+// message:"data received",
+// user:req.body
+// })
+// }
 module.exports.updateUser=async function (req,res){
 console.log(req.body);
+let id=req.params.id;
+let user=await userModel.findById(id)
 let dataToBeUpdated=req.body
-// for(key in dataToBeUpdated){
-// users[key]=dataToBeUpdated[key]
-// }
-let doc=await userModel.findOneAndUpdate({email:"amit@gmail.com"},
-dataToBeUpdated)
+try{
+if(user){
+const keys=[]
+for(let key in dataToBeUpdated){
+keys.push(key) 
+}
+for(let i=0; i<keys.length;i++){
+user[keys[i]]=dataToBeUpdated[keys[i]] 
+}
+const updatedData=await user.save();
 res.json({
 message:"data updated",
-dataToBeUpdated
+updatedData
 })
+}
+else{
+res.json({
+message:"user not found",
+})
+}
+}
+catch(err){
+res.json({
+message:err.message
+})
+}
 }
 module.exports.deleteUser=async function (req,res){
-// users={}
-// let doc=await userModel.deleteOne({name:"Sanjay"})
-let doc=await userModel.findOneAndRemove({email:"raju@gmail.com"});
-console.log(doc);
+try{
+let id =req.params.id
+let user=await userModel.findByIdAndDelete(id);
 res.json({
-message:"data deleted"
+message:"data deleted",
+user
 })
 }
-module.exports.userById=function (req,res){
-console.log(req.params.id)
+catch(err){
+res.json({
+msg:err.message,
+
+})
+}
+}
+module.exports.getAllUser=async function (req,res){
+try{
+let allUsers=await userModel.find();
 res.json({msg:"user id is",
-obj:req.params})
+allUsers})
 }
-module.exports.setCookies=function (req,res){
-// res.setHeader("Set-Cookie","isLoggedIn=true")
-res.cookie("isLoggedIn",false)
-res.cookie("password",12345678)
-res.send("Cookies has been set")
+catch(err){
+res.json({
+msg:err.message,
+})
 }
-module.exports.getCookies=function (req,res){
-let cookie=req.cookies
-console.log(cookie);
-res.send("Cookies received")
 }
+// module.exports.setCookies=function (req,res){
+// // res.setHeader("Set-Cookie","isLoggedIn=true")
+// res.cookie("isLoggedIn",false)
+// res.cookie("password",12345678)
+// res.send("Cookies has been set")
+// }
+// module.exports.getCookies=function (req,res){
+// let cookie=req.cookies
+// console.log(cookie);
+// res.send("Cookies received")
+// }

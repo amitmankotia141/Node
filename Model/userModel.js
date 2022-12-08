@@ -36,6 +36,15 @@ validate:function(){
 return (this.confirmPassword==this.password)
 }
 },
+role:{
+type:String,
+enum:["admin","user","restaurantowner"],
+default:"user"
+},
+profileImage:{
+type:String,
+default:"img/user/default.jpg"
+}
 });
 // userSchema.pre("save",function(){
 // console.log("before saving in db");

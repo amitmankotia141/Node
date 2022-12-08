@@ -1,11 +1,26 @@
 // let isLoggedIn=true
 var jwt=require("jsonwebtoken")
+const userModel = require("./Model/userModel")
 const JWT_KEY=require("./secret")
-module.exports.protectRoute=function (req,res,next){
+module.exports.isAuthorised=function(roles){
+return function(req,res,next){
+let role=req.role
+if(roles.includes(role)){
+next()
+}
+res.status(401).json({
+msg:"operation not allowed"
+})
+}
+}
+module.exports.protectRoute=async function (req,res,next){
 if(req.cookies.login){
 let token=req.cookies.login
-let isVerified=jwt.verify(token,JWT_KEY)
-if(isVerified){
+let payloaObj=jwt.verify(token,JWT_KEY)
+const user=await userModel.findById(payloadObj.payload)
+req.id=user.id
+req.role=user.role
+if(user){
 next()  
 }
 else{
