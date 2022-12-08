@@ -15,11 +15,11 @@ userRouter
 .post(login)
 userRouter
 .route("/signup")
-.post(signup)  
+.post(signup)
 //profile page
 userRouter.use(protectRoute)
 userRouter
-.route("/userProfile")
+.route("/profile")
 .get(getUser)
 //admin specific function
 userRouter.use(isAuthorised(["admin"]))

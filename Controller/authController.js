@@ -1,6 +1,6 @@
 const userModel=require("../Model/userModel")
 var jwt=require("jsonwebtoken")
-const {JWT_KEY}=require("../Helper")
+const {JWT_KEY}=require("../secret")
 module.exports.signup=async function(req,res){
 // let {email,name,password}=req.body
 try{

@@ -1,8 +1,6 @@
 const userModel=require("../Model/userModel")
 module.exports.getUser=async function (req,res){
 try{
-console.log(req.query);
-console.log(req.query.name);
 // let{name,age}=req.query
 // let filteredData=users.filter((userObj)=>{
 // return (userObj.name==name && userObj.age==age)
