@@ -2,6 +2,7 @@ const mongoose=require("mongoose")
 const {db_link}=require("../secret")
 const emailValidator=require("email-validator")
 const bcrypt=require("bcrypt")
+import { v4 as uuidv4 } from 'uuid';
 mongoose.connect(db_link)
 .then(function(db){
 console.log("db connected");
@@ -44,7 +45,8 @@ default:"user"
 profileImage:{
 type:String,
 default:"img/user/default.jpg"
-}
+},
+resetToken:String
 });
 // userSchema.pre("save",function(){
 // console.log("before saving in db");
@@ -62,6 +64,16 @@ this.confirmPassword=undefined
 // this.password=hashedString;
 // console.log(hashedString);
 // })
+userSchema.methods.createResetToken=function(){
+const resetToken=uuidv4();
+this.resetToken=resetToken
+return resetToken
+}
+userSchema.methods.resetPasswordHandler=function(password,confirmPassword){
+thid.password=password
+this.confirmPassword=confirmPassword
+this.resetToken=undefined
+}
 //models
 const userModel=mongoose.model("userModel",userSchema);
 module.exports=userModel

@@ -16,6 +16,12 @@ userRouter
 userRouter
 .route("/signup")
 .post(signup)
+userRouter
+.route("/forgetPassword")
+.post(forgetPassword)
+userRouter
+.route("/resetPassword/:token")
+.post(resetPassword)
 //profile page
 userRouter.use(protectRoute)
 userRouter
@@ -23,6 +29,6 @@ userRouter
 .get(getUser)
 //admin specific function
 userRouter.use(isAuthorised(["admin"]))
-userRouter.route("")
+userRouter.route("/")
 .get(getAllUser)
 module.exports=userRouter

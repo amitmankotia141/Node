@@ -30,8 +30,10 @@ let role=req.role
 if(roles.includes(role)){
 next()
 }
+else{
 res.status(401).json({
-msg:"operation not allowed"
+msg:"role invalid"
 })
+}
 }
 }

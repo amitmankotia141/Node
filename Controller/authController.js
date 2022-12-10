@@ -55,3 +55,48 @@ res.json({
 msg:err.message})
 }
 }
+module.exports.forgetPassword=async function(req,res){
+let {email}=req.body
+try{
+const user=userModel.findOne({email:email})
+if(user){
+const resetToken=user.createResetToken();
+let resetPasswordLink=`${req.protocol}://${req.get("host")}/resetPassword/${resetToken}`
+
+}
+else{
+res.json({
+msg:"user not found"
+})
+}
+}
+catch(err){
+res.status(500).json({
+msg:err.message
+})
+}
+}
+module.exports.resetPassword=async function(){
+try{
+const token=req.params.token
+let {password,confirmPassword}=req.body
+const user=await userModel.findOne({resetToken:token})
+if(user){
+user.resetPasswordHandler(password,confirmPassword);
+await user.save()
+res.json({
+msg:"password changed successfully"
+})
+}
+else{
+res.json({
+msg:"user not found"
+})
+}
+}
+catch(err){
+res.json({
+msg:err.message
+})
+}
+}
