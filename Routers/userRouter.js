@@ -2,7 +2,7 @@ const express=require("express")
 const userRouter=express.Router()
 const {isAuthorised,protectRoute}=require("../Helper")
 const {getUser,postUser,updateUser,deleteUser,getAllUser}=require("../Controller/userController")
-const {signup,login}=require("../Controller/authController")
+const {signup,login,forgetPassword,resetPassword,logout}=require("../Controller/authController")
 // userRouter.route("/setCookies").get(setCookies)
 // userRouter.route("/getCookies").get(getCookies)
 //user option
@@ -22,6 +22,9 @@ userRouter
 userRouter
 .route("/resetPassword/:token")
 .post(resetPassword)
+userRouter
+.route("/logout")
+.get(logout)
 //profile page
 userRouter.use(protectRoute)
 userRouter

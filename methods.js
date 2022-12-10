@@ -8,6 +8,7 @@ const userRouter=require("./Routers/userRouter")
 const authRouter=require("./Routers/authRouter")
 app.use("/users",userRouter)
 app.use("/auth",authRouter)
+const planModel=require("./Model/planModel")
 //Query
 // app.get("/users",)
 // app.post("/users",)
