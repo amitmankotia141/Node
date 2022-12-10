@@ -2,7 +2,7 @@ const mongoose=require("mongoose")
 const {db_link}=require("../secret")
 const emailValidator=require("email-validator")
 const bcrypt=require("bcrypt")
-const {uuidv4 }=require('uuid');
+const {uuidv4}=require('uuid');
 mongoose.connect(db_link)
 .then(function(db){
 console.log("user db connected");
