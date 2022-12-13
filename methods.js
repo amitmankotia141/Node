@@ -5,10 +5,9 @@ const { endsWith } = require("lodash");
 app.use(express.json())
 app.use(cookieParser())
 const userRouter=require("./Routers/userRouter")
-const authRouter=require("./Routers/authRouter")
+const planRouter=require("./Routers/planRouter")
 app.use("/users",userRouter)
-app.use("/auth",authRouter)
-const planModel=require("./Model/planModel")
+app.use("/plan",planRouter)
 //Query
 // app.get("/users",)
 // app.post("/users",)
